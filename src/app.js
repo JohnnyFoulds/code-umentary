@@ -19,6 +19,8 @@ $(document).ready(function() {
 		let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
 		// Replace the content block with a textarea containing the Markdown content
 		$('#' + blockID + ' .content').html('<textarea class="editArea">' + blockContent + '</textarea><button class="saveButton">Save</button><button class="cancelButton">Cancel</button>');
+		// Hide the "Edit" button
+		$(this).hide();
 	});
 	
 	// Handle click event on "Save" button within a content block
@@ -47,8 +49,8 @@ $(document).ready(function() {
 		let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
 		// Replace the textarea with the original HTML content
 		$('#' + blockID + ' .content').html(blockContent);
-		// Replace the "Save" and "Cancel" buttons with the "Edit" button
-		$('#' + blockID + ' .content').append('<button class="editButton">Edit</button>');
+        // Replace the "Save" and "Cancel" buttons with the "Edit" button
+        $('#' + blockID + ' .content').append('<button class="editButton">Edit</button>');
         $('#' + blockID + ' .saveButton, #' + blockID + ' .cancelButton').remove();
     });
 });
