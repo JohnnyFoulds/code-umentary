@@ -21,13 +21,23 @@ header {
   header i {
     margin-right: 0.5em;
   }
-  
-  nav {
-    position: fixed;
-    bottom: 2em;
-    right: 2em;
-    z-index: 100;
-  }
+
+nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.5em 1em;
+}
+
+nav button {
+  margin-left: 1em;
+}
 
   main {
     margin-top: 5.5em; /* Height of the fixed header */
@@ -38,6 +48,11 @@ header {
   
   nav button {
     margin-left: 1em;
+    background-color: #c0392b;
+  }
+
+  nav button:hover {
+    background-color: #a93226;
   }
   
   .blockHeader {
