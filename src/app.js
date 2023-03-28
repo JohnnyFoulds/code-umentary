@@ -19,8 +19,9 @@ $(document).ready(function() {
 		let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
 		// Replace the content block with a textarea containing the Markdown content
 		$('#' + blockID + ' .content').html('<textarea class="editArea">' + blockContent + '</textarea><button class="saveButton">Save</button><button class="cancelButton">Cancel</button>');
-		// Hide the "Edit" button
-		$(this).hide();
+		// Hide the "Edit" button in both the content block's "content" div and its parent div
+		$('#' + blockID + ' .editButton').hide();
+		$('#' + blockID).find('.editButton').hide();
 	});
 	
 	// Handle click event on "Save" button within a content block
@@ -36,21 +37,23 @@ $(document).ready(function() {
 		$('#' + blockID + ' .content').html(htmlContent);
 		// Store the new HTML content as the original content of the content block
 		$('#' + blockID).data('originalContent', htmlContent);
-		// Replace the "Save" and "Cancel" buttons with the "Edit" button
+		// Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
 		$('#' + blockID + ' .content').append('<button class="editButton">Edit</button>');
+		$('#' + blockID).find('.editButton').show();
 		$('#' + blockID + ' .saveButton, #' + blockID + ' .cancelButton').remove();
-	});
-	
-	// Handle click event on "Cancel" button within a content block
-	$('main').on('click', '.cancelButton', function() {
-		// Get the ID of the content block being edited
-		let blockID = $(this).parent().parent().attr('id');
-		// Get the original HTML content of the content block
-		let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
-		// Replace the textarea with the original HTML content
-		$('#' + blockID + ' .content').html(blockContent);
-        // Replace the "Save" and "Cancel" buttons with the "Edit" button
+    });
+
+    // Handle click event on "Cancel" button within a content block
+    $('main').on('click', '.cancelButton', function() {
+        // Get the ID of the content block being edited
+        let blockID = $(this).parent().parent().attr('id');
+        // Get the original HTML content of the content block
+        let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
+        // Replace the textarea with the original HTML content
+        $('#' + blockID + ' .content').html(blockContent);
+        // Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
         $('#' + blockID + ' .content').append('<button class="editButton">Edit</button>');
+        $('#' + blockID).find('.editButton').show();
         $('#' + blockID + ' .saveButton, #' + blockID + ' .cancelButton').remove();
     });
 });
