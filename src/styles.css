@@ -35,11 +35,15 @@ header {
     opacity: 0.5;
   }
   
+  .blockHeader .blockLabel {
+    opacity: 0.2;
+  }
+
   .contentBlock p {
-    margin: 0;
+    /* margin: 0;
     font-weight: bold;
     font-size: 0.8em;
-    opacity: 0.8;
+    opacity: 0.8; */
   }
   
   body {
@@ -84,6 +88,10 @@ header {
     margin: 0 0 1em;
   }
   
+  pre code {
+    font-size: 14px !important;
+  }
+
   button {
     background-color: #007bff;
     color: #fff;
@@ -130,6 +138,56 @@ header {
     border-radius: 0.25em;
   }
 
+  .content {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    margin: 00px 0;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .content p {
+    margin: 10px 0;
+  }
+  
+  .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    margin: 20px 0 10px;
+  }
+  
+  .content ul, .content ol {
+    margin: 10px 0;
+    padding-left: 20px;
+    list-style: inherit;
+  }
+  
+  .content li {
+    margin: 5px 0;
+    list-style: inherit;
+  }
+  
+  .content a {
+    color: #0077c0;
+    text-decoration: none;
+    border-bottom: 1px solid #0077c0;
+  }
+  
+  .content a:hover {
+    color: #005daa;
+    border-bottom: 1px solid #005daa;
+  }
+  
+  .content pre {
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 10px;
+    overflow: auto;
+    border-radius: 5px;
+  }
+  
   .dragHandle {
     display: inline-block;
     width: 20px;
