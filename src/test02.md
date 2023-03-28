@@ -13,6 +13,8 @@ There once was a fox
 
 And he also sometimes wrote shitty code.
 
+---
+
 ### Shit Code Example
 
 ```python

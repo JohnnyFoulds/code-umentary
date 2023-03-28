@@ -48,13 +48,21 @@ nav button {
   
   nav button {
     margin-left: 1em;
-    background-color: #c0392b;
-  }
-
-  nav button:hover {
-    background-color: #a93226;
+    background-color: #9b59b6;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
   }
   
+  nav button:hover {
+    background-color: #8e44ad;
+  }
+
   .blockHeader {
     display: flex;
     justify-content: space-between;
