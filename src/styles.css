@@ -30,7 +30,7 @@ header {
     align-items: center;
   }
   
-  .blockHeader span {
+  .blockHeader .blockID {
     font-size: 0.8em;
     opacity: 0.5;
   }
@@ -129,3 +129,5 @@ header {
     padding: 1em;
     border-radius: 0.25em;
   }
+
+  

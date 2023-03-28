@@ -5,19 +5,18 @@ $(document).ready(function() {
     // Register click event for "New Block" button
     $('#newBlockButton').click(function() {
         // Generate unique ID for new content block
-        let blockCount = $('.contentBlock').length + 1;
-        let blockID = 'contentBlock' + blockCount;
+        //let blockCount = $('.contentBlock').length + 1;
+        blockCount++;
+        let blockID = 'contentBlock-' + Date.now();;
 
         // Append the new content block to the main content area
-        //$('main').append('<div class="contentBlock" id="' + blockID + '"><div class="blockHeader"><span>Block ' + blockCount + '</span><button class="editButton">Edit</button></div><div class="content"></div></div>');
-        $('main').append('<div class="contentBlock" id="' + blockID + '"><div class="blockHeader"><span>Block ' + blockCount + '</span><button class="editButton">Edit</button><button class="deleteButton">Delete</button></div><div class="content"></div></div>');
-
+        $('main').append('<div class="contentBlock" id="' + blockID + '"><div class="blockHeader"><span class="blockID">Block ' + blockCount + '</span><span class="editDelete"><button class="editButton">Edit</button><button class="deleteButton">Delete</button></span></div><div class="content"></div></div>');
     });
 	
     // Handle click event on "Edit" button within a content block
     $('main').on('click', '.editButton', function() {
         // Get the ID of the content block being edited
-        let blockID = $(this).parent().parent().attr('id');
+        let blockID = $(this).parent().parent().parent().attr('id');
 
         // Get the original HTML content of the content block
         let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
@@ -26,25 +25,24 @@ $(document).ready(function() {
         $('#' + blockID + ' .content').html('<textarea class="editArea">' + blockContent + '</textarea><button class="saveButton">Save</button><button class="cancelButton">Cancel</button>');
 
         // Hide the "Edit" button in both the content block's "content" div and its parent div
-        $('#' + blockID + ' .editButton').hide();
-        $('#' + blockID).find('.editButton').hide();
+        $('#' + blockID + ' .editDelete').hide();
     });
 
     // Handle click event on "Delete" button within a content block
     $('main').on('click', '.deleteButton', function() {
         if (confirm("Are you sure you want to delete this block?")) {
-        // Get the ID of the content block being deleted
-        let blockID = $(this).parent().parent().attr('id');
-    
-        // Remove the content block from the DOM
-        $('#' + blockID).remove();
+            // Get the ID of the content block being deleted
+            let blockID = $(this).parent().parent().parent().attr('id');
+        
+            // Remove the content block from the DOM
+            $('#' + blockID).remove();
         }
     });    
 	
 	// Handle click event on "Save" button within a content block
 	$('main').on('click', '.saveButton', function() {
 		// Get the ID of the content block being edited
-		let blockID = $(this).parent().parent().attr('id');
+        let blockID = $(this).parent().parent().attr('id');
 
 		// Get the Markdown content from the textarea
 		let blockContent = $('#' + blockID + ' .editArea').val();
@@ -60,7 +58,7 @@ $(document).ready(function() {
 		$('#' + blockID).data('originalContent', blockContent);
 
 		// Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
-		$('#' + blockID).find('.editButton').show();
+		$('#' + blockID).find('.editDelete').show();
 		$('#' + blockID + ' .saveButton, #' + blockID + ' .cancelButton').remove();
     });
 
@@ -79,7 +77,7 @@ $(document).ready(function() {
         $('#' + blockID + ' .content').html(htmlContent);
 
         // Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
-        $('#' + blockID).find('.editButton').show();
+        $('#' + blockID).find('.editDelete').show();
         $('#' + blockID + ' .saveButton, #' + blockID + ' .cancelButton').remove();
     });
 });
