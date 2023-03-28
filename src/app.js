@@ -8,7 +8,7 @@ $(document).ready(function() {
 		// Create a new content block with unique ID
 		let blockID = 'block' + blockCount;
 		// Append the new content block to the main content area
-		$('main').append('<div class="contentBlock" id="' + blockID + '"><p>Block ' + blockCount + '</p><button class="editButton">Edit</button></div>');
+		$('main').append('<div class="contentBlock" id="' + blockID + '"><p>Block ' + blockCount + '</p><button class="editButton">Edit</button><div class="content"></div></div>');
 	});
 	
 	// Handle click event on "Edit" button within a content block
@@ -16,22 +16,22 @@ $(document).ready(function() {
 		// Get the ID of the content block being edited
 		let blockID = $(this).parent().attr('id');
 		// Get the original HTML content of the content block
-		let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID).html();
+		let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
 		// Replace the content block with a textarea containing the Markdown content
-		$('#' + blockID).html('<textarea class="editArea">' + blockContent + '</textarea><button class="saveButton">Save</button>');
+		$('#' + blockID + ' .content').html('<textarea class="editArea">' + blockContent + '</textarea><button class="saveButton">Save</button>');
 	});
 	
 	// Handle click event on "Save" button within a content block
 	$('main').on('click', '.saveButton', function() {
 		// Get the ID of the content block being edited
-		let blockID = $(this).parent().attr('id');
+		let blockID = $(this).parent().parent().attr('id');
 		// Get the Markdown content from the textarea
 		let blockContent = $('#' + blockID + ' .editArea').val();
 		// Convert the Markdown content to HTML using Showdown.js
 		let converter = new showdown.Converter();
 		let htmlContent = converter.makeHtml(blockContent);
 		// Replace the textarea with the new HTML content
-		$('#' + blockID).html(htmlContent);
+		$('#' + blockID + ' .content').html(htmlContent);
 		// Store the new HTML content as the original content of the content block
 		$('#' + blockID).data('originalContent', htmlContent);
 	});
