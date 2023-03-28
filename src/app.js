@@ -7,6 +7,7 @@ $(document).ready(function() {
 		blockCount++;
 		// Create a new content block with unique ID
 		let blockID = 'block' + blockCount;
+
 		// Append the new content block to the main content area
 		$('main').append('<div class="contentBlock" id="' + blockID + '"><p>Block ' + blockCount + '</p><button class="editButton">Edit</button><div class="content"></div></div>');
 	});
@@ -15,10 +16,13 @@ $(document).ready(function() {
 	$('main').on('click', '.editButton', function() {
 		// Get the ID of the content block being edited
 		let blockID = $(this).parent().attr('id');
+
 		// Get the original HTML content of the content block
 		let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
+
 		// Replace the content block with a textarea containing the Markdown content
 		$('#' + blockID + ' .content').html('<textarea class="editArea">' + blockContent + '</textarea><button class="saveButton">Save</button><button class="cancelButton">Cancel</button>');
+        
 		// Hide the "Edit" button in both the content block's "content" div and its parent div
 		$('#' + blockID + ' .editButton').hide();
 		$('#' + blockID).find('.editButton').hide();
