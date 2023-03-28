@@ -1,3 +1,24 @@
+function convertToHtml(markdownContent) {
+    // Initialize a new instance of the showdown converter
+    let converter = new showdown.Converter();
+  
+    // Convert the markdown content to HTML
+    let htmlContent = converter.makeHtml(markdownContent);
+
+    return htmlContent;
+}
+
+function highlightCode(blockElement) {
+    // Find all code blocks in the HTML content
+    let codeBlocks = $(blockElement).find('pre code');
+  
+    // Loop through each code block and apply syntax highlighting using Prism.js
+    codeBlocks.each(function(i, block) {
+      Prism.highlightElement(block);
+    });
+}
+
+
 $(document).ready(function() {
 	// Generate a unique ID for each new content block
 	let blockCount = 0;
@@ -48,11 +69,11 @@ $(document).ready(function() {
 		let blockContent = $('#' + blockID + ' .editArea').val();
 
 		// Convert the Markdown content to HTML using Showdown.js
-		let converter = new showdown.Converter();
-		let htmlContent = converter.makeHtml(blockContent);
+        let htmlContent = convertToHtml(blockContent);
 
 		// Replace the textarea with the new HTML content
 		$('#' + blockID + ' .content').html(htmlContent);
+        highlightCode($('#' + blockID + ' .content'))
 
 		// Store the new HTML content as the original content of the content block
 		$('#' + blockID).data('originalContent', blockContent);
@@ -68,13 +89,12 @@ $(document).ready(function() {
 		let blockID = $(this).parent().parent().attr('id');
 
         // Get the original HTML content of the content block
-        let blockContent = $('#' + blockID).data('originalContent') || '';
-		
-        let converter = new showdown.Converter();
-        let htmlContent = converter.makeHtml(blockContent);
+        let blockContent = $('#' + blockID).data('originalContent') || '';		
+        let htmlContent = convertToHtml(blockContent);
 
         // Replace the textarea with the original HTML content
         $('#' + blockID + ' .content').html(htmlContent);
+        highlightCode($('#' + blockID + ' .content'))
 
         // Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
         $('#' + blockID).find('.editDelete').show();
