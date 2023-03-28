@@ -163,6 +163,7 @@ nav button {
   }
   
   .contentBlock {
+    position: relative; 
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin: 1em;
@@ -230,5 +231,18 @@ nav button {
   
   .dragHandle i {
     font-size: 16px;
+  }
+  
+  .addBlock {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 0.8em;
+    opacity: 0.5;
+    cursor: pointer;
+  }
+  
+  .addBlock:hover {
+    opacity: 1;
   }
   

@@ -40,7 +40,7 @@ $(document).ready(function() {
         let blockID = 'contentBlock-' + Date.now();;
 
         // Append the new content block to the main content area
-        $('main').append('<div class="contentBlock" id="' + blockID + '"><div class="blockHeader"><span class="blockID"><span class="dragHandle"><i class="fas fa-bars"></i></span><span class="blockLabel">Block ' + blockCount + '</span></span><span class="editDelete"><button class="editButton">Edit</button><button class="deleteButton">Delete</button></span></div><div class="content"></div></div>');
+        $('main').append('<div class="contentBlock" id="' + blockID + '"><div class="blockHeader"><span class="blockID"><span class="dragHandle"><i class="fas fa-bars"></i></span><span class="blockLabel">Block ' + blockCount + '</span></span><span class="editDelete"><button class="editButton">Edit</button><button class="deleteButton">Delete</button></span></div><div class="content"></div><span class="addBlock"><i class="fas fa-plus"></i></span></div>');
 
         // Trigger a click event on the "Edit" button of the new block
         $('#' + blockID + ' .editButton').click();        
@@ -59,6 +59,7 @@ $(document).ready(function() {
 
         // Hide the "Edit" button in both the content block's "content" div and its parent div
         $('#' + blockID + ' .editDelete').hide();
+        $('#' + blockID + ' .addBlock').hide();
     });
 
     // Handle click event on "Delete" button within a content block
@@ -92,6 +93,7 @@ $(document).ready(function() {
 
 		// Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
 		$('#' + blockID).find('.editDelete').show();
+        $('#' + blockID).find('.addBlock').show();
 		$('#' + blockID + ' .saveButton, #' + blockID + ' .cancelButton').remove();
     });
 
@@ -110,6 +112,22 @@ $(document).ready(function() {
 
         // Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
         $('#' + blockID).find('.editDelete').show();
+        $('#' + blockID).find('.addBlock').show();
         $('#' + blockID + ' .saveButton, #' + blockID + ' .cancelButton').remove();
     });
+
+    // Handle click event on "+" button within a content block
+    $('main').on('click', '.addBlock', function() {
+        // Get the ID of the content block after which to insert the new block
+        let blockID = $(this).parent().attr('id');
+
+        // Generate unique ID for new content block
+        let newBlockID = 'contentBlock-' + Date.now();
+
+        // Append the new content block to the main content area after the current block
+        $('#' + blockID).after('<div class="contentBlock" id="' + newBlockID + '"><div class="blockHeader"><span class="blockID"><span class="dragHandle"><i class="fas fa-bars"></i></span><span class="blockLabel">Block ' + (blockCount + 1) + '</span></span><span class="editDelete"><button class="editButton">Edit</button><button class="deleteButton">Delete</button></span></div><div class="content"></div><span class="addBlock"><i class="fas fa-plus"></i></span></div>');
+
+        // Trigger a click event on the "Edit" button of the new block
+        $('#' + blockID + ' .editButton').click();        
+    });    
 });
