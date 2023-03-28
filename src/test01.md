@@ -1,21 +1,13 @@
-## Learn to type, bitch
+## All Sorts of things
 
-asdasd
+The amazing work with **this** is that it now allows you to create documents even without ChatGPT.
 
-There once was a fox
+You can insert lists:
 
-- he sucked balls
-- he was lazy
+- Eat beans
+- Fart
 
-And he also sometimes wrote shitty code.
+Make text with [links](https://github.com/JohnnyFoulds/code-docs), really all sorts of nonsense. And even put some images.
 
-### Shit Code Example
+![time series](https://machinelearningmastery.com/wp-content/uploads/2017/06/Line-Plots-of-Air-Pollution-Time-Series-1024x768.png)
 
-```python
-frogs = 1
-
-def reward():
-    global frogs
-    frogs += 1
-    return frogs
-```
