@@ -29,12 +29,17 @@ header {
     justify-content: space-between;
     align-items: center;
   }
-
+  
+  .blockHeader span {
+    font-size: 0.8em;
+    opacity: 0.5;
+  }
+  
   .contentBlock p {
     margin: 0;
     font-weight: bold;
     font-size: 0.8em;
-    opacity: 0.5;
+    opacity: 0.8;
   }
   
   body {
@@ -93,7 +98,7 @@ header {
     background-color: #0069d9;
   }
   
-  .editButton, .saveButton, .cancelButton {
+  .editButton, .deleteButton, .saveButton, .cancelButton {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -104,7 +109,7 @@ header {
     margin-right: 0.5em;
   }
   
-  .editButton:hover, .saveButton:hover, .cancelButton:hover {
+  .editButton:hover, .deleteButton:hover, .saveButton:hover, .cancelButton:hover {
     background-color: #0069d9;
   }
   
@@ -124,28 +129,3 @@ header {
     padding: 1em;
     border-radius: 0.25em;
   }
-  
-  .dark {
-    background-color: #333;
-    color: #fff;
-  }
-  
-  .dark button, .dark .editButton, .dark .saveButton, .dark .cancelButton {
-    background-color: #f0ad4e;
-    color: #333;
-  }
-  
-  .dark button:hover, .dark .editButton:hover, .dark .saveButton:hover, .dark .cancelButton:hover {
-    background-color: #ec971f;
-  }
-  
-  .dark .contentBlock {
-    background-color: #444;
-    color: #fff;
-    box-shadow: none;
-  }
-  
-  .dark .contentBlock p {
-    color: #f0ad4e;
-  }
-  
