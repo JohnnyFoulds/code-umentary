@@ -41,6 +41,9 @@ $(document).ready(function() {
 
         // Append the new content block to the main content area
         $('main').append('<div class="contentBlock" id="' + blockID + '"><div class="blockHeader"><span class="blockID"><span class="dragHandle"><i class="fas fa-bars"></i></span><span class="blockLabel">Block ' + blockCount + '</span></span><span class="editDelete"><button class="editButton">Edit</button><button class="deleteButton">Delete</button></span></div><div class="content"></div></div>');
+
+        // Trigger a click event on the "Edit" button of the new block
+        $('#' + blockID + ' .editButton').click();        
     });
 	
     // Handle click event on "Edit" button within a content block
