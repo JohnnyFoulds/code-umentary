@@ -24,6 +24,11 @@ header {
     margin-left: 1em;
   }
   
+  .blockHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   .contentBlock p {
     margin: 0;
