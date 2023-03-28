@@ -46,7 +46,7 @@ $(document).ready(function() {
 		$('#' + blockID + ' .content').html(htmlContent);
 
 		// Store the new HTML content as the original content of the content block
-		$('#' + blockID).data('originalContent', htmlContent);
+		$('#' + blockID).data('originalContent', blockContent);
 
 		// Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
 		//$('#' + blockID + ' .content').append('<button class="editButton">Edit</button>');
@@ -58,14 +58,16 @@ $(document).ready(function() {
     $('main').on('click', '.cancelButton', function() {
         // Get the ID of the content block being edited
 		let blockID = $(this).parent().parent().attr('id');
-        console.log(blockID);
 
         // Get the original HTML content of the content block
         //let blockContent = $('#' + blockID).data('originalContent') || $('#' + blockID + ' .content').html();
         let blockContent = $('#' + blockID).data('originalContent') || '';
+		
+        let converter = new showdown.Converter();
+        let htmlContent = converter.makeHtml(blockContent);
 
         // Replace the textarea with the original HTML content
-        $('#' + blockID + ' .content').html(blockContent);
+        $('#' + blockID + ' .content').html(htmlContent);
 
         // Replace the "Save" and "Cancel" buttons with the "Edit" button in both the content block's "content" div and its parent div
         //$('#' + blockID + ' .content').append('<button class="editButton">Edit</button>');
