@@ -1,3 +1,5 @@
+let blockCount = 0;
+
 function convertToHtml(markdownContent) {
     // Initialize a new instance of the showdown converter
     let converter = new showdown.Converter();
@@ -18,10 +20,35 @@ function highlightCode(blockElement) {
     });
 }
 
-$(document).ready(function() {
-	// Generate a unique ID for each new content block
-	let blockCount = 0;
+function createNewBlock(newBlockID) {
+    // Increment the block count
+    blockCount++;
+    
+    // Create the HTML for the new content block
+    let newBlockHTML = `
+      <div class="contentBlock" id="${newBlockID}">
+        <div class="blockHeader">
+          <span class="blockID">
+            <span class="dragHandle">
+              <i class="fas fa-bars"></i>
+            </span>
+            <span class="blockLabel">Block ${blockCount}</span>
+          </span>
+          <span class="editDelete">
+            <button class="editButton">Edit</button>
+            <button class="deleteButton">Delete</button>
+          </span>
+        </div>
+        <div class="content"></div>
+        <span class="addBlock"><i class="fas fa-plus"></i></span>
+      </div>
+    `;
+    
+    // Return the new block HTML
+    return newBlockHTML;
+  }
 
+$(document).ready(function() {
     // Enable drag and drop functionality for content blocks
     $(function() {
         $('main').sortable({
@@ -34,13 +61,14 @@ $(document).ready(function() {
 	
     // Register click event for "New Block" button
     $('#newBlockButton').click(function() {
-        // Generate unique ID for new content block
-        //let blockCount = $('.contentBlock').length + 1;
         blockCount++;
         let blockID = 'contentBlock-' + Date.now();;
 
+        // Create a new block HTML string
+        let newBlockHTML = createNewBlock(blockID);
+
         // Append the new content block to the main content area
-        $('main').append('<div class="contentBlock" id="' + blockID + '"><div class="blockHeader"><span class="blockID"><span class="dragHandle"><i class="fas fa-bars"></i></span><span class="blockLabel">Block ' + blockCount + '</span></span><span class="editDelete"><button class="editButton">Edit</button><button class="deleteButton">Delete</button></span></div><div class="content"></div><span class="addBlock"><i class="fas fa-plus"></i></span></div>');
+        $('main').append(newBlockHTML);
 
         // Trigger a click event on the "Edit" button of the new block
         $('#' + blockID + ' .editButton').click();        
@@ -121,13 +149,14 @@ $(document).ready(function() {
         // Get the ID of the content block after which to insert the new block
         let blockID = $(this).parent().attr('id');
 
-        // Generate unique ID for new content block
-        let newBlockID = 'contentBlock-' + Date.now();
-
+        // Create a new block HTML string
+        newBlockID = 'contentBlock-' + Date.now();
+        let newBlockHTML = createNewBlock(newBlockID);
+        
         // Append the new content block to the main content area after the current block
-        $('#' + blockID).after('<div class="contentBlock" id="' + newBlockID + '"><div class="blockHeader"><span class="blockID"><span class="dragHandle"><i class="fas fa-bars"></i></span><span class="blockLabel">Block ' + (blockCount + 1) + '</span></span><span class="editDelete"><button class="editButton">Edit</button><button class="deleteButton">Delete</button></span></div><div class="content"></div><span class="addBlock"><i class="fas fa-plus"></i></span></div>');
-
+        $('#' + blockID).after(newBlockHTML);
+        
         // Trigger a click event on the "Edit" button of the new block
-        $('#' + blockID + ' .editButton').click();        
+        $('#' + newBlockID + ' .editButton').click();        
     });    
 });
