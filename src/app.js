@@ -18,10 +18,18 @@ function highlightCode(blockElement) {
     });
 }
 
-
 $(document).ready(function() {
 	// Generate a unique ID for each new content block
 	let blockCount = 0;
+
+    // Enable drag and drop functionality for content blocks
+    $(function() {
+        $('main').sortable({
+            handle: '.blockHeader',
+            cursor: 'move'
+        });
+        $('main').disableSelection();
+    });    
 	
     // Register click event for "New Block" button
     $('#newBlockButton').click(function() {
