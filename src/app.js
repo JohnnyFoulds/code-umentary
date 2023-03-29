@@ -114,7 +114,7 @@ $(document).ready(function() {
     editContentBlock(block);
   }
 
-  function newDocument() {
+  function newDocument(createNew=true) {
     if (confirm("Are you sure you want to start a new document? Please note that all unexported contents will be lost!")) {
       // Remove all content blocks
       $(".contentBlock").remove();
@@ -123,8 +123,13 @@ $(document).ready(function() {
       blockCounter = 0;
       
       // Create a new empty content block
-      newBlock();
+      if (createNew)
+        newBlock();
+
+      return true;
     }
+
+    return false;
   }
 
   function exportDocument() {
@@ -150,19 +155,57 @@ $(document).ready(function() {
   }
 
   function importDocument() {
-    console.log("Importing document...")
-    // Create an input element to allow the user to select a file
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.md';
-    input.addEventListener('change', () => {
-      // Get the selected file
-      const file = input.files[0];
-      if (!file) return;  
-    });
+    // create a new document
+    if (newDocument(false)) {
 
-    // Click the input element to trigger the file selection dialog
-    input.click();
+      // Create an input element to allow the user to select a file
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.md';
+      input.addEventListener('change', () => {
+        // Get the selected file
+        const file = input.files[0];
+        if (!file) return;  
+
+        // Read the contents of the file
+        const reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+        reader.onload = (event) => {
+          // Get the markdown content
+          const markdownContent = event.target.result;
+
+          // Split the content into blocks using the separator
+          const separatorRegex = /<!-- block-separator id:(.+) -->\n+/g;
+          const blocks = markdownContent.split(separatorRegex);
+
+          // Remove empty strings from the blocks array
+          const nonEmptyBlocks = blocks.filter((block) => block.trim() !== '');
+     
+          // Loop through each block and create a new content block
+          for (let i = 0; i < nonEmptyBlocks.length; i += 2) {
+            const question = nonEmptyBlocks[i]
+            const blockContent = nonEmptyBlocks[i + 1].trim();
+
+            // Create the new content block
+            const block = createNewBlock();
+            const saveCancel= block.find('.saveCancel');
+
+            block.data('question', question);
+            block.data('originalContent', blockContent);
+
+            const htmlContent = convertToHtml(blockContent);
+            block.find('.content').html(htmlContent);
+            highlightCode(block.find('.content'));            
+
+            saveCancel.hide();
+            main.append(block);
+          }     
+        }  
+      });
+
+      // Click the input element to trigger the file selection dialog
+      input.click();
+    }
   }
 
   main.sortable({
