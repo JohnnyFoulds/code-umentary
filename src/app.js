@@ -212,6 +212,38 @@ $(document).ready(function() {
     }
   }
 
+  function settings() {
+    const apiKey = localStorage.getItem('chatGPTApiKey');
+
+    // Create the form elements
+    const formGroup = $('<div>', { class: 'form-group' });
+    const apiKeyInput = $('<input>', { type: 'text', class: 'form-control', id: 'apiKeyInput', placeholder: 'Enter ChatGPT API key' }).val(apiKey);
+    formGroup.append(apiKeyInput);
+  
+    // Create the dialog box
+    const dialog = bootbox.dialog({
+      title: 'Settings',
+      message: formGroup,
+      closeButton: false,
+      backdrop: true,
+      buttons: {
+        cancel: {
+          label: 'Cancel',
+          className: 'btn-secondary'
+        },
+        confirm: {
+          label: 'Save',
+          className: 'btn-primary',
+          callback: function() {
+            console.log('Saving settings...', apiKeyInput.val());
+            const apiKey = apiKeyInput.val();
+            localStorage.setItem('chatGPTApiKey', apiKey);
+          }
+        }
+      }
+    });
+  } 
+
   main.sortable({
       handle: '.dragHandle',
       update: function(event, ui) {
@@ -233,6 +265,10 @@ $(document).ready(function() {
 
   $('#importDocument').click(function() {
     importDocument();
+  });
+
+  $('#settings').click(function() {
+    settings();
   });
 
   main.on('click', '.editButton', function() {
