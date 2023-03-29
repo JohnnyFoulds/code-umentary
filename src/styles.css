@@ -149,7 +149,8 @@ button:hover {
 .editButton,
 .deleteButton,
 .saveButton,
-.cancelButton {
+.cancelButton,
+.askButton {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -164,7 +165,7 @@ button:hover {
   width: 55px;
 }
 
-.saveButton, .cancelButton {
+.saveButton, .cancelButton, .askButton {
   width: 100px;
 }
 
@@ -173,6 +174,28 @@ button:hover {
 .saveButton:hover,
 .cancelButton:hover {
   background-color: #0069d9;
+}
+
+.saveCancel {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.saveCancel button {
+  margin-right: 0.5em;
+}
+
+.askButton {
+  margin-left: auto;
+  background-color: #b00020;
+  display: inline-block;
+}
+
+.askButton:hover {
+  background-color: #7f0000;
 }
 
 .editArea {

@@ -17,7 +17,8 @@ $(document).ready(function() {
 
       const saveButton = $('<button>', { class: 'saveButton' }).text('Save');
       const cancelButton = $('<button>', { class: 'cancelButton' }).text('Cancel');
-      const saveCancel = $('<span>', { class: 'saveCancel' }).append(saveButton, cancelButton);
+      const askButton = $('<button>', { class: 'askButton' }).text('Ask');
+      const saveCancel = $('<span>', { class: 'saveCancel' }).append(saveButton, cancelButton, askButton);
 
       const blockID = $('<span>', { class: 'blockID' }).append(dragHandle, blockLabel);
       const titleIcon = $('<div>', { class: 'title-icon' }).append($('<h1>').append($('<i>', { class: 'fas fa-terminal' })).text('Code-umentary'));
@@ -28,6 +29,7 @@ $(document).ready(function() {
 
   function convertToHtml(markdownContent) {
       const converter = new showdown.Converter();
+      converter.setOption('tables', true);
       const htmlContent = converter.makeHtml(markdownContent);
       return htmlContent;
   }
