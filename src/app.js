@@ -60,8 +60,11 @@ $(document).ready(function() {
     const editDelete = block.find('.editDelete');
     const addBlock = block.find('.addBlock');
     const blockContent = editArea.val();
-    const htmlContent = convertToHtml(blockContent);
 
+    // if the question is empty, do nothing
+    if (blockContent.trim() === '') return;
+
+    const htmlContent = convertToHtml(blockContent);
     block.find('.content').html(htmlContent);
     highlightCode(block.find('.content'));
     block.data('originalContent', blockContent);
@@ -114,6 +117,10 @@ $(document).ready(function() {
   function deleteContentBlock(block) {
       if (confirm("Are you sure you want to delete this block?")) {
           block.remove();
+
+          if ($('main .contentBlock').length === 0) {
+            $('#newBlockButton').click();
+          }
       }
   }
 

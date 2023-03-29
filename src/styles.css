@@ -79,11 +79,10 @@ nav button:hover {
 
 .blockHeader .blockID {
   font-size: 0.8em;
-  opacity: 0.5;
 }
 
-.blockHeader .blockLabel {
-  opacity: 0.2;
+.blockLabel {
+  opacity: 0.5;
 }
 
 body {
@@ -264,6 +263,11 @@ pre code {
   height: 20px;
   margin-right: 10px;
   cursor: move;
+  opacity: 0.5;
+}
+
+.dragHandle:hover {
+  opacity: 1;
 }
 
 .dragHandle i {
