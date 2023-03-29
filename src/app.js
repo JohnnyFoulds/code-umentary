@@ -95,6 +95,59 @@ $(document).ready(function() {
           block.remove();
       }
   }
+
+  function createNewBlock() {
+    const blockID = 'contentBlock-' + Date.now();
+    const block = createContentBlock(blockID);
+
+    // update the block question data
+    const blockLabel = block.find('.blockLabel');
+    block.data('question', blockLabel.text());
+    
+    return block;
+  }
+
+  function newBlock() {
+    block = createNewBlock();
+    main.append(block);
+
+    editContentBlock(block);
+  }
+
+  function newDocument() {
+    if (confirm("Are you sure you want to start a new document? Please note that all unexported contents will be lost!")) {
+      // Remove all content blocks
+      $(".contentBlock").remove();
+      
+      // Reset block counter to zero
+      blockCounter = 0;
+      
+      // Create a new empty content block
+      newBlock();
+    }
+  }
+
+  function exportDocument() {
+    let markdownContent = "";
+  
+    $('.contentBlock').each(function () {
+      const blockID = $(this).data('question');
+      const separator = `<!-- block-separator id:${blockID} -->`;
+      markdownContent += separator + "\n" + $(this).data('originalContent') + "\n\n";
+    });
+  
+    const file = new Blob([markdownContent], { type: 'text/plain' });
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = "code-umentary.md";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
   
   main.sortable({
       handle: '.dragHandle',
@@ -104,12 +157,17 @@ $(document).ready(function() {
   });
   
   $('#newBlockButton').click(function() {
-      const blockID = 'contentBlock-' + Date.now();
-      const block = createContentBlock(blockID);
-      main.append(block);
-      editContentBlock(block);
+    newBlock()
+  });
+
+  $('#newDocument').click(function() {
+    newDocument();
   });
   
+  $('#exportDocument').click(function() {
+    exportDocument();
+  });
+
   main.on('click', '.editButton', function() {
       const block = $(this).closest('.contentBlock');
       editContentBlock(block);
@@ -132,8 +190,8 @@ $(document).ready(function() {
   
   main.on('click', '.addBlock', function() {
       const block = $(this).closest('.contentBlock');
-      const blockID = 'contentBlock-' + Date.now();
-      const newBlock = createContentBlock(blockID);
+      const newBlock = createNewBlock();
+
       block.after(newBlock);
       editContentBlock(newBlock);
   });

@@ -5,18 +5,17 @@
 }
 
 header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #007bff;
-  color: #fff;
-  padding: 1em;
-
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  color: #fff;
+  padding: 1em;
 }
 
 header h1 {
@@ -52,6 +51,7 @@ main {
 
 nav {
   padding-top: 1em;
+  visibility: hidden;
 }
 
 nav button {
@@ -274,22 +274,38 @@ button:hover {
   opacity: 1;
 }
 
-.navbar {
-  background-color: #343a40;
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  z-index: 1000;
+  display: none;
 }
 
-.navbar-brand {
-  color: #fff;
-}
-
-.navbar-nav .nav-link {
-  color: #fff;
-}
-
-.navbar-toggler {
+.dropdown-toggle {
   border: none;
+  background-color: transparent;
+  font-size: 1.5em;
+  color: #fff;
+  margin-left: 1em;
+  cursor: pointer;
 }
 
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+.dropdown-menu {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 0;
 }
+
+.dropdown-item {
+  color: #fff;
+  font-size: 1em;
+}
+
+.dropdown-item:hover {
+  background-color: #0069d9;
+}
+
+.dropdown-item i {
+  margin-right: 0.5em;
+}
+
