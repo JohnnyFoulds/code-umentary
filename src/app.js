@@ -9,7 +9,7 @@ $(document).ready(function() {
       const content = $('<div>', { class: 'content' });
       const addBlock = $('<span>', { class: 'addBlock' }).append($('<i>', { class: 'fas fa-plus' }));
       const dragHandle = $('<span>', { class: 'dragHandle' }).append($('<i>', { class: 'fas fa-bars' }));        
-      const blockLabel = $('<span>', { class: 'blockLabel' }).text(`Block ${blockCount}`);
+      const blockLabel = $('<span>', { class: 'blockLabel' }).text('user');
       
       const editButton = $('<button>', { class: 'editButton' }).text('Edit');
       const deleteButton = $('<button>', { class: 'deleteButton' }).text('Delete');
@@ -93,15 +93,22 @@ $(document).ready(function() {
   }
 
   function askQuestion(block) {
+    const blockLabel = block.find('.blockLabel');
     const editArea = block.find('.editArea');
     const question = editArea.val().trim();
 
     // if the question is empty, do nothing
     if (question === '') return;
     
+    blockLabel.text('assistant');
+    block.data('role', 'assistant');
     block.data('question', question);
+    
+
     console.log(question);
     apiKey = getChatGPTApiKey(settings);
+
+    saveContentBlock(block);
   }
   
   function deleteContentBlock(block) {
@@ -117,6 +124,7 @@ $(document).ready(function() {
     // update the block question data
     const blockLabel = block.find('.blockLabel');
     block.data('question', blockLabel.text());
+    block.data('role', blockLabel.text());
     
     return block;
   }
@@ -150,7 +158,7 @@ $(document).ready(function() {
     let markdownContent = "";
   
     $('.contentBlock').each(function () {
-      const blockID = $(this).data('question');
+      const blockID = $(this).data('role');
       const separator = `<!-- block-separator id:${blockID} -->`;
       markdownContent += separator + "\n" + $(this).data('originalContent') + "\n\n";
     });
@@ -200,11 +208,16 @@ $(document).ready(function() {
           // Loop through each block and create a new content block
           for (let i = 0; i < nonEmptyBlocks.length; i += 2) {
             const question = nonEmptyBlocks[i]
+            const role = nonEmptyBlocks[i]
             const blockContent = nonEmptyBlocks[i + 1].trim();
 
             // Create the new content block
             const block = createNewBlock();
+            const blockLabel = block.find('.blockLabel');
             const saveCancel= block.find('.saveCancel');
+
+            block.data('role', role);
+            blockLabel.text(role);
 
             block.data('question', question);
             block.data('originalContent', blockContent);
