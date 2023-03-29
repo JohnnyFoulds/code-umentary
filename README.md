@@ -4,7 +4,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/JohnnyFoulds/code-docs.svg)](https://GitHub.com/JohnnyFoulds/code-docs/issues/)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/JohnnyFoulds/code-docs.svg)](https://GitHub.com/JohnnyFoulds/code-docs/pull/)
 
-I am too impatient to wait for [Copilot for Docs](https://githubnext.com/projects/copilot-for-docs) and, from what I have [seen](https://www.youtube.com/watch?v=BBU2mwM9WDE) so far it is not going to be exactly the tool I want. So time to create our own.
+I am too impatient to wait for [Copilot for Docs](https://githubnext.com/projects/copilot-for-docs) and, from what I have [seen](https://www.youtube.com/watch?v=BBU2mwM9WDE) so far, it is not going to be exactly the tool I want. So time to create our own!
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ I am too impatient to wait for [Copilot for Docs](https://githubnext.com/project
 
 ## Description
 
-Code-umentary is a web-based editor for creating code documenting, or actually anything else where you want some AI assistance to learn new skills. It allows users to create a document with code snippets, explanations, and formatting options, all in one place. That sounds perfectly boring, but the main feature is that integration with the GPTs to both help you write code and create learning notes for yourself and others.
+Code-umentary is a web-based editor for creating code documentation, or actually anything else where you want some AI assistance to learn new skills. It allows users to create a document with code snippets, explanations, and formatting options, all in one place. That sounds perfectly boring, but the main feature is that integration with the GPTs to both help you write code and create learning notes for yourself and others.
 
 ## Installation
 
