@@ -148,7 +148,23 @@ $(document).ready(function() {
       window.URL.revokeObjectURL(url);
     }, 0);
   }
-  
+
+  function importDocument() {
+    console.log("Importing document...")
+    // Create an input element to allow the user to select a file
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.md';
+    input.addEventListener('change', () => {
+      // Get the selected file
+      const file = input.files[0];
+      if (!file) return;  
+    });
+
+    // Click the input element to trigger the file selection dialog
+    input.click();
+  }
+
   main.sortable({
       handle: '.dragHandle',
       update: function(event, ui) {
@@ -166,6 +182,10 @@ $(document).ready(function() {
   
   $('#exportDocument').click(function() {
     exportDocument();
+  });
+
+  $('#importDocument').click(function() {
+    importDocument();
   });
 
   main.on('click', '.editButton', function() {
