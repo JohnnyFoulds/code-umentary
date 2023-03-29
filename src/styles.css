@@ -332,3 +332,50 @@ button:hover {
   margin-right: 0.5em;
 }
 
+table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  width: 100%;
+  font-size: 0.9em;
+}
+
+table th,
+table td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  text-align: left;
+}
+
+table th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #eaeaea;
+}
+
+table thead th:first-child,
+table tbody td:first-child {
+  border-left: none;
+}
+
+table thead th:last-child,
+table tbody td:last-child {
+  border-right: none;
+}
+
+table thead th,
+table tbody td {
+  border-top: none;
+}
+
+table tfoot td {
+  background-color: #f7f7f7;
+  font-weight: bold;
+  text-align: right;
+}
