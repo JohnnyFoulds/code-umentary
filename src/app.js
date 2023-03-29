@@ -2,12 +2,6 @@ $(document).ready(function() {
   const main = $('main');
   let blockCount = 0;
 
-  $(document).on('click', function(event) { 
-    console.log('Document clicked');
-    console.log('Target element:', event.target);
-    console.log('Target click:', event.target.click);
-  });
-
   function createContentBlock(id) {
       blockCount++;
       const block = $('<div>', { class: 'contentBlock', id });
@@ -48,8 +42,6 @@ $(document).ready(function() {
   function editContentBlock(block) {
       const originalContent = block.data('originalContent') || block.find('.content').html();
       const editArea = $('<textarea>', { class: 'editArea' }).val(originalContent);
-      const saveButton = $('<button>', { class: 'saveButton' }).text('Save');
-      const cancelButton = $('<button>', { class: 'cancelButton' }).text('Cancel');
       const saveCancel= block.find('.saveCancel');
       const editDelete = block.find('.editDelete');
       const addBlock = block.find('.addBlock');
@@ -57,32 +49,45 @@ $(document).ready(function() {
       block.find('.content').html(editArea);
       editDelete.hide();
       addBlock.hide();
-  
-      console.log('Save button:', saveButton);
-      saveButton.click(function() {
-          console.log('Save button clicked');
-          const blockID = block.attr('id');
-          const blockContent = editArea.val();
-          const htmlContent = convertToHtml(blockContent);
-          block.find('.content').html(htmlContent);
-          highlightCode(block.find('.content'));
-          block.data('originalContent', blockContent);
-          saveCancel.hide();
-          editDelete.show();
-          addBlock.show();
-      });
-  
-      cancelButton.click(function() {
-          const blockID = block.attr('id');
-          const originalContent = block.data('originalContent') || '';
-          const htmlContent = convertToHtml(originalContent);
-          block.find('.content').html(htmlContent);
-          highlightCode(block.find('.content'));
-          editDelete.show();
-          addBlock.show();
-          saveButton.remove();
-          cancelButton.remove();
-      });
+      saveCancel.show();
+  }
+
+  function saveContentBlock(block) {
+    const editArea = block.find('.editArea');
+    const saveCancel= block.find('.saveCancel');
+    const editDelete = block.find('.editDelete');
+    const addBlock = block.find('.addBlock');
+    const blockContent = editArea.val();
+    const htmlContent = convertToHtml(blockContent);
+
+    block.find('.content').html(htmlContent);
+    highlightCode(block.find('.content'));
+    block.data('originalContent', blockContent);
+
+    saveCancel.hide();
+    editDelete.show();
+    addBlock.show();
+  }
+
+  function cancelContentBlock(block) {
+    const saveCancel= block.find('.saveCancel');
+    const editDelete = block.find('.editDelete');
+    const addBlock = block.find('.addBlock');
+    const originalContent = block.data('originalContent') || '';
+
+        // if there is no original content, delete the block
+        if (originalContent === '') {
+            block.remove();
+            return;
+        }
+
+        const htmlContent = convertToHtml(originalContent);
+        block.find('.content').html(htmlContent);
+        highlightCode(block.find('.content'));
+
+        saveCancel.hide();
+        editDelete.show();
+        addBlock.show();
   }
   
   function deleteContentBlock(block) {
@@ -114,6 +119,16 @@ $(document).ready(function() {
       const block = $(this).closest('.contentBlock');
       deleteContentBlock(block);
   });
+
+  main.on('click', '.saveButton', function() {
+    const block = $(this).closest('.contentBlock');
+    saveContentBlock(block);
+  });
+
+  main.on('click', '.cancelButton', function() {
+    const block = $(this).closest('.contentBlock');
+    cancelContentBlock(block);
+  });
   
   main.on('click', '.addBlock', function() {
       const block = $(this).closest('.contentBlock');
@@ -122,4 +137,7 @@ $(document).ready(function() {
       block.after(newBlock);
       editContentBlock(newBlock);
   });
+
+  // create a new block
+  $('#newBlockButton').click();
 });
