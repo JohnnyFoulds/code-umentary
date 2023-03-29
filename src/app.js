@@ -143,11 +143,13 @@ $(document).ready(function() {
       markdownContent += separator + "\n" + $(this).data('originalContent') + "\n\n";
     });
   
+    const fileName = prompt("Please enter the file name:");
+    if (!fileName) return; // Exit if the user cancels the prompt
     const file = new Blob([markdownContent], { type: 'text/plain' });
     const a = document.createElement("a");
     const url = URL.createObjectURL(file);
     a.href = url;
-    a.download = "code-umentary.md";
+    a.download = fileName + ".md";
     document.body.appendChild(a);
     a.click();
     setTimeout(function () {
