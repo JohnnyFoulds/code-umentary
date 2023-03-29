@@ -132,20 +132,6 @@ pre code {
   font-size: 14px !important;
 }
 
-/* button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 0.5em;
-  border-radius: 0.25em;
-  cursor: pointer;
-  font-size: 1em;
-} */
-
-button:hover {
-  background-color: #0069d9;
-}
-
 .editButton,
 .deleteButton,
 .saveButton,

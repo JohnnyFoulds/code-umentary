@@ -91,6 +91,18 @@ $(document).ready(function() {
         editDelete.show();
         addBlock.show();
   }
+
+  function askQuestion(block) {
+    const editArea = block.find('.editArea');
+    const question = editArea.val().trim();
+
+    // if the question is empty, do nothing
+    if (question === '') return;
+    
+    block.data('question', question);
+    console.log(question);
+    apiKey = getChatGPTApiKey(settings);
+  }
   
   function deleteContentBlock(block) {
       if (confirm("Are you sure you want to delete this block?")) {
@@ -213,34 +225,40 @@ $(document).ready(function() {
   }
 
   function settings() {
-    const apiKey = localStorage.getItem('chatGPTApiKey');
+    return new Promise((resolve) => {
+      const apiKey = localStorage.getItem('chatGPTApiKey');
 
-    // Create the form elements
-    const formGroup = $('<div>', { class: 'form-group' });
-    const apiKeyInput = $('<input>', { type: 'text', class: 'form-control', id: 'apiKeyInput', placeholder: 'Enter ChatGPT API key' }).val(apiKey);
-    formGroup.append(apiKeyInput);
-  
-    // Create the dialog box
-    const dialog = bootbox.dialog({
-      title: 'Settings',
-      message: formGroup,
-      closeButton: false,
-      backdrop: true,
-      buttons: {
-        cancel: {
-          label: 'Cancel',
-          className: 'btn-secondary'
-        },
-        confirm: {
-          label: 'Save',
-          className: 'btn-primary',
-          callback: function() {
-            console.log('Saving settings...', apiKeyInput.val());
-            const apiKey = apiKeyInput.val();
-            localStorage.setItem('chatGPTApiKey', apiKey);
+      // Create the form elements
+      const formGroup = $('<div>', { class: 'form-group' });
+      const apiKeyInput = $('<input>', { type: 'text', class: 'form-control', id: 'apiKeyInput', placeholder: 'Enter ChatGPT API key' }).val(apiKey);
+      formGroup.append(apiKeyInput);
+    
+      // Create the dialog box
+      const dialog = bootbox.dialog({
+        title: 'Settings',
+        message: formGroup,
+        closeButton: false,
+        backdrop: true,
+        buttons: {
+          cancel: {
+            label: 'Cancel',
+            className: 'btn-secondary',
+            callback: () => {
+              resolve(false);
+            }
+          },
+          confirm: {
+            label: 'Save',
+            className: 'btn-primary',
+            callback: function() {
+              console.log('Saving settings...', apiKeyInput.val());
+              const apiKey = apiKeyInput.val();
+              localStorage.setItem('chatGPTApiKey', apiKey);
+              resolve(apiKey);
+            }
           }
         }
-      }
+      });
     });
   } 
 
@@ -289,6 +307,11 @@ $(document).ready(function() {
   main.on('click', '.cancelButton', function() {
     const block = $(this).closest('.contentBlock');
     cancelContentBlock(block);
+  });
+
+  main.on('click', '.askButton', function() {
+    const block = $(this).closest('.contentBlock');
+    askQuestion(block);
   });
   
   main.on('click', '.addBlock', function() {
