@@ -12,7 +12,6 @@ I am too impatient to wait for [Copilot for Docs](https://githubnext.com/project
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Description
 
