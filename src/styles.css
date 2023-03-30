@@ -369,3 +369,22 @@ table tfoot td {
   font-weight: bold;
   text-align: right;
 }
+
+blockquote {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  border-left: 4px solid #007bff;
+  color: #666;
+  background-color: #f0f0f0;
+  font-style: italic;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+blockquote footer {
+  margin-top: 0.5em;
+  font-size: 0.8em;
+  color: #888;
+}
