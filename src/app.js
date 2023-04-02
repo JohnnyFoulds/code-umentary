@@ -102,6 +102,15 @@ $(document).ready(function() {
     // if the question is empty, do nothing
     if (question === '') return;
 
+    $('#spinner').show();
+
+    // turn the question into a heading
+    heading_level = ''
+   if (!question.startsWith('#')) {
+    heading_level = '### '
+    }
+    editArea.val(`${heading_level}${question}`);
+
     // save the question
     saveContentBlock(block);
 
@@ -122,6 +131,8 @@ $(document).ready(function() {
     answer_blockLabel.text('assistant');
     answer_block.data('role', 'assistant');
     answer_block.data('question', question);
+
+    $('#spinner').hide();
   }
   
   function deleteContentBlock(block) {
@@ -371,6 +382,14 @@ $(document).ready(function() {
     askQuestion(block);
   });
   
+  document.addEventListener("keydown", function(event) {
+    console.log(event);
+    if (event.code === "Enter" && event.altKey) {
+      const block = $(event.target).closest('.contentBlock');
+      askQuestion(block);
+    }
+  });
+
   main.on('click', '.addBlock', function() {
       const block = $(this).closest('.contentBlock');
       const newBlock = createNewBlock();
