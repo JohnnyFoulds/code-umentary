@@ -95,23 +95,33 @@ $(document).ready(function() {
         addBlock.show();
   }
 
-  function askQuestion(block) {
-    const blockLabel = block.find('.blockLabel');
+  async function askQuestion(block) {
     const editArea = block.find('.editArea');
     const question = editArea.val().trim();
 
     // if the question is empty, do nothing
     if (question === '') return;
-    
-    blockLabel.text('assistant');
-    block.data('role', 'assistant');
-    block.data('question', question);
-    
 
-    console.log(question);
-    apiKey = getChatGPTApiKey(settings);
-
+    // save the question
     saveContentBlock(block);
+
+    // get the messages
+    messages = getBlockMessages();
+    console.log(messages);
+
+    // ask the question
+    // console.log(question);
+    apiKey = await getChatGPTApiKey(settings);
+    response = await fetchMessages(messages, apiKey)
+
+    // create a new block and add the response
+    answer_block = createNewBlock(response);
+    main.append(answer_block);
+    
+    const answer_blockLabel = answer_block.find('.blockLabel');
+    answer_blockLabel.text('assistant');
+    answer_block.data('role', 'assistant');
+    answer_block.data('question', question);
   }
   
   function deleteContentBlock(block) {
@@ -124,7 +134,7 @@ $(document).ready(function() {
       }
   }
 
-  function createNewBlock() {
+  function createNewBlock(content) {
     const blockID = 'contentBlock-' + Date.now();
     const block = createContentBlock(blockID);
 
@@ -132,6 +142,16 @@ $(document).ready(function() {
     const blockLabel = block.find('.blockLabel');
     block.data('question', blockLabel.text());
     block.data('role', blockLabel.text());
+
+    if (content) {
+      block.data('originalContent', content);
+      const htmlContent = convertToHtml(content);
+      block.find('.content').html(htmlContent);
+      highlightCode(block.find('.content'));
+
+      const saveCancel= block.find('.saveCancel');
+      saveCancel.hide();
+    }
     
     return block;
   }
@@ -159,6 +179,23 @@ $(document).ready(function() {
     }
 
     return false;
+  }
+
+  function getBlockMessages() {
+    let messages = [];
+
+    $('.contentBlock').each(function () {
+      const role = $(this).data('role');
+      const content = $(this).data('originalContent');
+
+      // add the message to the array
+      messages.push({
+        role: role,
+        content: content
+      });
+    });
+
+    return messages;
   }
 
   function exportDocument() {
