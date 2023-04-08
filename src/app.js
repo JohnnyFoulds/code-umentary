@@ -146,7 +146,7 @@ $(document).ready(function() {
   }
 
   function createNewBlock(content) {
-    const blockID = 'contentBlock-' + Date.now();
+    const blockID = 'contentBlock-' + Math.floor(Math.random() * 1000000);
     const block = createContentBlock(blockID);
 
     // update the block question data
@@ -213,7 +213,24 @@ $(document).ready(function() {
       }
     });
 
-    return messages;
+    return limitTokens(messages, 3000);
+  }
+
+  function limitTokens(messages, maxTokens) {
+    let limitedMessages = Array.from(messages);
+    let tokens = 0;
+
+    do {
+      tokens = JSON.stringify(limitedMessages).length / 4
+
+      if (tokens > maxTokens) {
+        console.log('Token limit reached. Removing last message:', tokens)
+        limitedMessages.shift();
+      }
+
+    } while (tokens > maxTokens)
+
+    return limitedMessages;
   }
 
   function exportDocument() {
