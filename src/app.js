@@ -115,7 +115,7 @@ $(document).ready(function() {
     saveContentBlock(block);
 
     // get the messages
-    messages = getBlockMessages();
+    messages = getBlockMessages(block);
     console.log(messages);
 
     // ask the question
@@ -125,7 +125,7 @@ $(document).ready(function() {
 
     // create a new block and add the response
     answer_block = createNewBlock(response);
-    main.append(answer_block);
+    block.after(answer_block);
     
     const answer_blockLabel = answer_block.find('.blockLabel');
     answer_blockLabel.text('assistant');
@@ -192,18 +192,25 @@ $(document).ready(function() {
     return false;
   }
 
-  function getBlockMessages() {
+  function getBlockMessages(block) {
     let messages = [];
+    const questionBlockID = block.attr('id')
 
     $('.contentBlock').each(function () {
       const role = $(this).data('role');
       const content = $(this).data('originalContent');
+      const blockID = $(this).attr('id');
 
       // add the message to the array
       messages.push({
         role: role,
         content: content
       });
+
+      // if the block is the question block, stop adding messages
+      if (blockID === questionBlockID) {
+        return false;
+      }
     });
 
     return messages;
