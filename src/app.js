@@ -102,8 +102,6 @@ $(document).ready(function() {
     // if the question is empty, do nothing
     if (question === '') return;
 
-    $('#spinner').show();
-
     // turn the question into a heading
     heading_level = ''
    if (!question.startsWith('#')) {
@@ -121,6 +119,7 @@ $(document).ready(function() {
     // ask the question
     // console.log(question);
     apiKey = await getChatGPTApiKey(settings);
+    $('#spinner').show();
     response = await fetchMessages(messages, apiKey)
 
     // create a new block and add the response
@@ -319,11 +318,15 @@ $(document).ready(function() {
   function settings() {
     return new Promise((resolve) => {
       const apiKey = localStorage.getItem('chatGPTApiKey');
+      const githubToken = localStorage.getItem('githubToken');
 
       // Create the form elements
       const formGroup = $('<div>', { class: 'form-group' });
       const apiKeyInput = $('<input>', { type: 'text', class: 'form-control', id: 'apiKeyInput', placeholder: 'Enter ChatGPT API key' }).val(apiKey);
+      const githubTokenInput = $('<input>', { type: 'text', class: 'form-control', id: 'githubToken', placeholder: 'Enter GitHub Access Token' }).val(githubToken);
+      
       formGroup.append(apiKeyInput);
+      formGroup.append(githubTokenInput);
     
       // Create the dialog box
       const dialog = bootbox.dialog({
@@ -345,7 +348,10 @@ $(document).ready(function() {
             callback: function() {
               console.log('Saving settings...', apiKeyInput.val());
               const apiKey = apiKeyInput.val();
+              const githubToken = githubTokenInput.val();
+
               localStorage.setItem('chatGPTApiKey', apiKey);
+              localStorage.setItem('githubToken', githubToken);
               resolve(apiKey);
             }
           }

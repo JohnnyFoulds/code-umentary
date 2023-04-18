@@ -408,3 +408,7 @@ blockquote footer {
   font-size: 4em;
   color: white;
 }
+
+.form-control {
+  margin: 0.5em 0;
+}
