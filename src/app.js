@@ -54,6 +54,66 @@ $(document).ready(function() {
       saveCancel.show();
   }
 
+  function persistsDocument() {
+    console.log('Saving Document');
+
+    const githubToken = localStorage.getItem('githubToken');
+    if (!githubToken) {
+      console.log('No GitHub token found.');
+      return;
+    }
+    const documentContent = getDocumentContent();
+    const existingGist = JSON.parse(localStorage.getItem('existingGist'));
+
+    // save the document to a github gist
+    console.log(documentContent);
+
+    if (existingGist) {
+      // update existing gist
+      fetch(`https://api.github.com/gists/${existingGist}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${githubToken}`,
+        },
+        body: JSON.stringify({
+          files: {
+            [`code_umentary-${existingGist}.md`]: {
+              content: documentContent,
+            },
+          },
+        }),
+      })
+        .then(response => response.json())
+        .then(data => console.log(`The document has been updated at: ${data.html_url}`))
+        .catch(error => console.error(error));
+    } else {
+      // create new gist
+      fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${githubToken}`,
+        },
+        body: JSON.stringify({
+          description: 'Created by Code-umentary',
+          public: true,
+          files: {
+            [`code_umentary-${Date.now()}.md`]: {
+              content: documentContent,
+            },
+          },
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(`The document has been saved at: ${data.html_url}`);
+          localStorage.setItem('existingGist', JSON.stringify(data.id));
+        })
+        .catch(error => console.error(error));
+    }    
+  }
+
   function saveContentBlock(block) {
     const editArea = block.find('.editArea');
     const saveCancel= block.find('.saveCancel');
@@ -72,6 +132,8 @@ $(document).ready(function() {
     saveCancel.hide();
     editDelete.show();
     addBlock.show();
+
+    persistsDocument();
   }
 
   function cancelContentBlock(block) {
@@ -132,6 +194,7 @@ $(document).ready(function() {
     answer_block.data('question', question);
 
     $('#spinner').hide();
+    persistsDocument();
   }
   
   function deleteContentBlock(block) {
@@ -141,6 +204,8 @@ $(document).ready(function() {
           if ($('main .contentBlock').length === 0) {
             $('#newBlockButton').click();
           }
+
+          persistsDocument();
       }
   }
 
@@ -175,6 +240,9 @@ $(document).ready(function() {
 
   function newDocument(createNew=true) {
     if (confirm("Are you sure you want to start a new document? Please note that all unexported contents will be lost!")) {
+      // remove the existing gist
+      localStorage.setItem('existingGist', null);      
+
       // Remove all content blocks
       $(".contentBlock").remove();
       
@@ -232,7 +300,7 @@ $(document).ready(function() {
     return limitedMessages;
   }
 
-  function exportDocument() {
+  function getDocumentContent() {
     let markdownContent = "";
   
     $('.contentBlock').each(function () {
@@ -240,6 +308,12 @@ $(document).ready(function() {
       const separator = `<!-- block-separator id:${blockID} -->`;
       markdownContent += separator + "\n" + $(this).data('originalContent') + "\n\n";
     });
+    
+    return markdownContent;
+  }
+
+  function exportDocument() {
+    let markdownContent = getDocumentContent();
   
     const fileName = prompt("Please enter the file name:");
     if (!fileName) return; // Exit if the user cancels the prompt
@@ -364,6 +438,7 @@ $(document).ready(function() {
       handle: '.dragHandle',
       update: function(event, ui) {
           // Handle sorting logic here
+          persistsDocument();
       }
   });
   
