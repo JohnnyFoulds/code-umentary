@@ -391,24 +391,47 @@ $(document).ready(function() {
     input.click();
   }
 
-  // function openDocument() {
-  //   // Get the gist ID from the user
-  //   const gistID = prompt("Please enter the Gist ID:");
-  //   if (!gistID) return; // Exit if the user cancels the prompt
+  async function openGist() {
+    // get the github token
+    const githubToken = localStorage.getItem('githubToken');
+    if (!githubToken) {
+      console.log('No GitHub token found.');
+      return;
+    }
+  
+    // get the gist ID from the user
+    const gistId = prompt('Enter the ID of the gist to open:');
+    if (!gistId) return;
+  
+    $('#spinner').show();
+    try {
+      const response = await new Promise((resolve, reject) => {
+        fetch(`https://api.github.com/gists/${gistId}`, {
+          headers: {
+            Authorization: `token ${githubToken}`,
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              reject(new Error(`Failed to load gist: ${response.status}`));
+            }
+            resolve(response);
+          })
+          .catch((error) => reject(error));
+      });
+      const data = await response.json();
+      const file = Object.values(data.files)[0];
+      const markdownContent = file.content;
 
-  //   // Get the gist
-  //   const gist = getGist(gistID);
-  //   gist.then((data) => {
-  //     // Get the markdown content from the gist
-  //     const markdownContent = data.files['document.md'].content;
-
-  //     // Load the document
-  //     loadDocument(markdownContent);
-
-  //     // Save the gist ID in local storage
-  //     localStorage.setItem('existingGist', gistID);
-  //   });
-  // }
+      loadDocument(markdownContent);
+      localStorage.setItem('existingGist', JSON.stringify(data.id));
+  
+    } catch (error) {
+      console.error(error);
+      alert('Failed to load gist.');
+    }
+    $('#spinner').hide();
+  }
 
   function settings() {
     return new Promise((resolve) => {
@@ -469,6 +492,10 @@ $(document).ready(function() {
 
   $('#newDocument').click(function() {
     newDocument();
+  });
+
+  $('#openGist').click(function() {
+    openGist();
   });
   
   $('#exportDocument').click(function() {
