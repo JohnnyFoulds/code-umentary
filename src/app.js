@@ -330,70 +330,65 @@ $(document).ready(function() {
     }, 0);
   }
 
-  function loadDocument(markdown) {
+  function loadDocument(markdownContent) {
     // create a new document
     if (newDocument(false)) {
+        // Split the content into blocks using the separator
+        const separatorRegex = /<!-- block-separator id:(.+) -->\n+/g;
+        const blocks = markdownContent.split(separatorRegex);
 
+        // Remove empty strings from the blocks array
+        const nonEmptyBlocks = blocks.filter((block) => block.trim() !== '');
+    
+        // Loop through each block and create a new content block
+        for (let i = 0; i < nonEmptyBlocks.length; i += 2) {
+          const question = nonEmptyBlocks[i]
+          const role = nonEmptyBlocks[i]
+          const blockContent = nonEmptyBlocks[i + 1].trim();
+
+          // Create the new content block
+          const block = createNewBlock();
+          const blockLabel = block.find('.blockLabel');
+          const saveCancel= block.find('.saveCancel');
+
+          block.data('role', role);
+          blockLabel.text(role);
+
+          block.data('question', question);
+          block.data('originalContent', blockContent);
+
+          const htmlContent = convertToHtml(blockContent);
+          block.find('.content').html(htmlContent);
+          highlightCode(block.find('.content'));            
+
+          saveCancel.hide();
+          main.append(block);
+        }
     }
   }
 
   function importDocument() {
-    // create a new document
-    if (newDocument(false)) {
+    // Create an input element to allow the user to select a file
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.md';
+    input.addEventListener('change', () => {
+      // Get the selected file
+      const file = input.files[0];
+      if (!file) return;  
 
-      // Create an input element to allow the user to select a file
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.md';
-      input.addEventListener('change', () => {
-        // Get the selected file
-        const file = input.files[0];
-        if (!file) return;  
+      // Read the contents of the file
+      const reader = new FileReader();
+      reader.readAsText(file, 'UTF-8');
+      reader.onload = (event) => {
+        // Get the markdown content
+        const markdownContent = event.target.result;
+        loadDocument(markdownContent);
+      }  
+    });
 
-        // Read the contents of the file
-        const reader = new FileReader();
-        reader.readAsText(file, 'UTF-8');
-        reader.onload = (event) => {
-          // Get the markdown content
-          const markdownContent = event.target.result;
-
-          // Split the content into blocks using the separator
-          const separatorRegex = /<!-- block-separator id:(.+) -->\n+/g;
-          const blocks = markdownContent.split(separatorRegex);
-
-          // Remove empty strings from the blocks array
-          const nonEmptyBlocks = blocks.filter((block) => block.trim() !== '');
-     
-          // Loop through each block and create a new content block
-          for (let i = 0; i < nonEmptyBlocks.length; i += 2) {
-            const question = nonEmptyBlocks[i]
-            const role = nonEmptyBlocks[i]
-            const blockContent = nonEmptyBlocks[i + 1].trim();
-
-            // Create the new content block
-            const block = createNewBlock();
-            const blockLabel = block.find('.blockLabel');
-            const saveCancel= block.find('.saveCancel');
-
-            block.data('role', role);
-            blockLabel.text(role);
-
-            block.data('question', question);
-            block.data('originalContent', blockContent);
-
-            const htmlContent = convertToHtml(blockContent);
-            block.find('.content').html(htmlContent);
-            highlightCode(block.find('.content'));            
-
-            saveCancel.hide();
-            main.append(block);
-          }     
-        }  
-      });
-
-      // Click the input element to trigger the file selection dialog
-      input.click();
-    }
+    // Click the input element to trigger the file selection dialog
+    input.click();
   }
 
   function settings() {
