@@ -78,7 +78,7 @@ $(document).ready(function() {
         },
         body: JSON.stringify({
           files: {
-            [`code_umentary-${existingGist}.md`]: {
+            [`code_umentary.md`]: {
               content: documentContent,
             },
           },
@@ -99,7 +99,7 @@ $(document).ready(function() {
           description: 'Created by Code-umentary',
           public: true,
           files: {
-            [`code_umentary-${Date.now()}.md`]: {
+            [`code_umentary.md`]: {
               content: documentContent,
             },
           },
@@ -390,6 +390,25 @@ $(document).ready(function() {
     // Click the input element to trigger the file selection dialog
     input.click();
   }
+
+  // function openDocument() {
+  //   // Get the gist ID from the user
+  //   const gistID = prompt("Please enter the Gist ID:");
+  //   if (!gistID) return; // Exit if the user cancels the prompt
+
+  //   // Get the gist
+  //   const gist = getGist(gistID);
+  //   gist.then((data) => {
+  //     // Get the markdown content from the gist
+  //     const markdownContent = data.files['document.md'].content;
+
+  //     // Load the document
+  //     loadDocument(markdownContent);
+
+  //     // Save the gist ID in local storage
+  //     localStorage.setItem('existingGist', gistID);
+  //   });
+  // }
 
   function settings() {
     return new Promise((resolve) => {
