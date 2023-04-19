@@ -238,8 +238,8 @@ $(document).ready(function() {
     editContentBlock(block);
   }
 
-  function newDocument(createNew=true) {
-    if (confirm("Are you sure you want to start a new document? Please note that all unexported contents will be lost!")) {
+  function newDocument(createNew=true, warn=true) {
+    if (!warn || confirm("Are you sure you want to start a new document? Please note that all unexported contents will be lost!")) {
       // remove the existing gist
       localStorage.setItem('existingGist', null);      
 
@@ -330,9 +330,9 @@ $(document).ready(function() {
     }, 0);
   }
 
-  function loadDocument(markdownContent) {
+  function loadDocument(markdownContent, warn=true) {
     // create a new document
-    if (newDocument(false)) {
+    if (newDocument(false, warn)) {
         // Split the content into blocks using the separator
         const separatorRegex = /<!-- block-separator id:(.+) -->\n+/g;
         const blocks = markdownContent.split(separatorRegex);
@@ -391,18 +391,9 @@ $(document).ready(function() {
     input.click();
   }
 
-  async function openGist() {
-    // get the github token
+  async function importGist(gistId, warn=true) {
     const githubToken = localStorage.getItem('githubToken');
-    if (!githubToken) {
-      console.log('No GitHub token found.');
-      return;
-    }
-  
-    // get the gist ID from the user
-    const gistId = prompt('Enter the ID of the gist to open:');
-    if (!gistId) return;
-  
+
     $('#spinner').show();
     try {
       const response = await new Promise((resolve, reject) => {
@@ -423,7 +414,7 @@ $(document).ready(function() {
       const file = Object.values(data.files)[0];
       const markdownContent = file.content;
 
-      loadDocument(markdownContent);
+      loadDocument(markdownContent, warn);
       localStorage.setItem('existingGist', JSON.stringify(data.id));
   
     } catch (error) {
@@ -431,6 +422,21 @@ $(document).ready(function() {
       alert('Failed to load gist.');
     }
     $('#spinner').hide();
+  }
+
+  function openGist() {
+    // get the github token
+    const githubToken = localStorage.getItem('githubToken');
+    if (!githubToken) {
+      console.log('No GitHub token found.');
+      return;
+    }
+  
+    // get the gist ID from the user
+    const gistId = prompt('Enter the ID of the gist to open:');
+    if (!gistId) return;
+  
+    importGist(gistId);
   }
 
   function settings() {
@@ -553,4 +559,11 @@ $(document).ready(function() {
 
   // create a new block
   $('#newBlockButton').click();
+
+  // load the last document if possible
+  const existingGist = JSON.parse(localStorage.getItem('existingGist'));
+  if (existingGist) {
+    console.log(existingGist)
+    importGist(existingGist, false);
+  }
 });
