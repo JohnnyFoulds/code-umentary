@@ -330,6 +330,13 @@ $(document).ready(function() {
     }, 0);
   }
 
+  function loadDocument(markdown) {
+    // create a new document
+    if (newDocument(false)) {
+
+    }
+  }
+
   function importDocument() {
     // create a new document
     if (newDocument(false)) {
